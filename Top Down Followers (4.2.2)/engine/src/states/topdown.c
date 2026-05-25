@@ -23,6 +23,10 @@ upoint16_t pos1;
 upoint16_t pos2;
 upoint16_t pos3;
 upoint16_t pos4;
+upoint16_t pos5;
+upoint16_t pos6;
+upoint16_t pos7;
+upoint16_t pos8;
 
 void topdown_init(void) BANKED {
     camera_offset_x = 0;
@@ -30,12 +34,14 @@ void topdown_init(void) BANKED {
     camera_deadzone_x = 0;
     camera_deadzone_y = 0;
 
-	pos4 = PLAYER.pos;
-	pos3 = PLAYER.pos;
+    pos1 = PLAYER.pos;
 	pos2 = PLAYER.pos;
-	pos1 = PLAYER.pos;
-	
-	topdown_grid = 16;
+	pos3 = PLAYER.pos;
+	pos4 = PLAYER.pos;
+	pos5 = PLAYER.pos;
+	pos6 = PLAYER.pos;
+	pos7 = PLAYER.pos;
+	pos8 = PLAYER.pos;
 	
 	if (topdown_followers >= 1) {
 		actors[1].pos = PLAYER.pos;
@@ -64,6 +70,7 @@ void topdown_update(void) BANKED {
     static UWORD max_pos = 0;
 	
 	// move actors towards relevant pos
+    if (topdown_grid == 16) {
 		if (topdown_followers >= 1) {
 			if (actors[1].pos.x < pos2.x) {
 				actors[1].pos.x += PLAYER.move_speed;
@@ -109,6 +116,53 @@ void topdown_update(void) BANKED {
 				actor_set_dir(&actors[3], DIR_UP, TRUE);
 			}
 		}
+    } else {
+        if (topdown_followers >= 1) {
+			if (actors[1].pos.x < pos3.x) {
+				actors[1].pos.x += PLAYER.move_speed;
+				actor_set_dir(&actors[1], DIR_RIGHT, TRUE);
+			} else if (actors[1].pos.x > pos3.x) {
+				actors[1].pos.x -= PLAYER.move_speed;
+				actor_set_dir(&actors[1], DIR_LEFT, TRUE);
+			} else if (actors[1].pos.y < pos3.y) {
+				actors[1].pos.y += PLAYER.move_speed;
+				actor_set_dir(&actors[1], DIR_DOWN, TRUE);
+			} else if (actors[1].pos.y > pos3.y) {
+				actors[1].pos.y -= PLAYER.move_speed;
+				actor_set_dir(&actors[1], DIR_UP, TRUE);
+			}
+		}
+		if (topdown_followers >= 2) {
+			if (actors[2].pos.x < pos5.x) {
+				actors[2].pos.x += PLAYER.move_speed;
+				actor_set_dir(&actors[2], DIR_RIGHT, TRUE);
+			} else if (actors[2].pos.x > pos5.x) {
+				actors[2].pos.x -= PLAYER.move_speed;
+				actor_set_dir(&actors[2], DIR_LEFT, TRUE);
+			} else if (actors[2].pos.y < pos5.y) {
+				actors[2].pos.y += PLAYER.move_speed;
+				actor_set_dir(&actors[2], DIR_DOWN, TRUE);
+			} else if (actors[2].pos.y > pos5.y) {
+				actors[2].pos.y -= PLAYER.move_speed;
+				actor_set_dir(&actors[2], DIR_UP, TRUE);
+			}
+		}
+		if (topdown_followers >= 3) {
+			if (actors[3].pos.x < pos7.x) {
+				actors[3].pos.x += PLAYER.move_speed;
+				actor_set_dir(&actors[3], DIR_RIGHT, TRUE);
+			} else if (actors[3].pos.x > pos7.x) {
+				actors[3].pos.x -= PLAYER.move_speed;
+				actor_set_dir(&actors[3], DIR_LEFT, TRUE);
+			} else if (actors[3].pos.y < pos7.y) {
+				actors[3].pos.y += PLAYER.move_speed;
+				actor_set_dir(&actors[3], DIR_DOWN, TRUE);
+			} else if (actors[3].pos.y > pos7.y) {
+				actors[3].pos.y -= PLAYER.move_speed;
+				actor_set_dir(&actors[3], DIR_UP, TRUE);
+			}
+		}
+    }
 
     // Is player on an 8x8px tile?
     if ((topdown_grid == 16 && ON_16PX_GRID(PLAYER.pos)) ||
@@ -143,13 +197,6 @@ void topdown_update(void) BANKED {
 			actor_set_dir(&PLAYER, new_dir, player_moving);
 			hit_actor = actor_in_front_of_player(topdown_grid, FALSE);
 			
-			// If player is moving and no actor in front, update all pos
-			if (player_moving && hit_actor == NULL) {
-				pos4 = pos3;
-				pos3 = pos2;
-				pos2 = pos1;
-			}
-			
         } else if (INPUT_RECENT_RIGHT) {
             player_moving = TRUE;
             new_dir = DIR_RIGHT;
@@ -166,13 +213,6 @@ void topdown_update(void) BANKED {
 			actor_set_dir(&PLAYER, new_dir, player_moving);
 			hit_actor = actor_in_front_of_player(topdown_grid, FALSE);
 			
-			// If player is moving and no actor in front, update all pos
-			if (player_moving && hit_actor == NULL) {
-				pos4 = pos3;
-				pos3 = pos2;
-				pos2 = pos1;
-			}
-			
         } else if (INPUT_RECENT_UP) {
             player_moving = TRUE;
             new_dir = DIR_UP;
@@ -188,14 +228,7 @@ void topdown_update(void) BANKED {
 			// Turn player and check for actor in front of player
 			actor_set_dir(&PLAYER, new_dir, player_moving);
 			hit_actor = actor_in_front_of_player(topdown_grid, FALSE);
-			
-			// If player is moving and no actor in front, update all pos
-			if (player_moving && hit_actor == NULL) {
-				pos4 = pos3;
-				pos3 = pos2;
-				pos2 = pos1;
-			}
-			
+
         } else if (INPUT_RECENT_DOWN) {
             player_moving = TRUE;
             new_dir = DIR_DOWN;
@@ -211,14 +244,19 @@ void topdown_update(void) BANKED {
 			// Turn player and check for actor in front of player
 			actor_set_dir(&PLAYER, new_dir, player_moving);
 			hit_actor = actor_in_front_of_player(topdown_grid, FALSE);
-			
-			// If player is moving and no actor in front, update all pos
-			if (player_moving && hit_actor == NULL) {
-				pos4 = pos3;
-				pos3 = pos2;
-				pos2 = pos1;
-			}
+
         }
+
+        // If player is moving and no actor in front, update all pos
+		if (player_moving && hit_actor == NULL) {
+            pos8 = pos7;
+            pos7 = pos6;
+            pos6 = pos5;
+            pos5 = pos4;
+            pos4 = pos3;
+            pos3 = pos2;
+            pos2 = pos1;
+		}
 
         // Check for actor overlap
         hit_actor = actor_overlapping_player();

@@ -13,7 +13,7 @@ Moving actors will no longer stop moving when colliding with another actor.
 This is useful for when you want enemy actors to collide with the player.
 Please read the respective README files for specific instructions to the version you are using.
 #### Top Down Followers (3.2.0, 4.1.2, 4.2.2)
-This plugin allows 0-3 actors to follow the player in a Top Down scene. The plugin adds an engine field called 'Number of Followers' that can be changed from the settings or at runtime from the 'Engine Field Update' event. The plugin selects that number of actors in the scene as followers, starting with the first actor. Only supports 16px grid size.
+This plugin allows 0-3 actors to follow the player in a Top Down scene. The plugin adds an engine field called 'Number of Followers' that can be changed from the settings or at runtime from the 'Engine Field Update' event. The plugin selects that number of actors in the scene as followers, starting with the first actor.
 #### Adventure Reforged (4.1.2, 4.0.0)
 Adventure Reforged is an engine plugin that completely replaces the Adventure scene type. It includes the following features:
 -More performant player movement
